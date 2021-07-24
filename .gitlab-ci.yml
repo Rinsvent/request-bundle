@@ -1,0 +1,18 @@
+image: dh.rinsvent.ru/ci
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+services:
+  - docker:dind
+
+before_script:
+  - bash bin/docker/prepare-ci.sh
+
+build:
+  stage: build
+  script:
+    - docker login --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD} dh.rinsvent.ru
+    - bash bin/docker/ci.sh
+
