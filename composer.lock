@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72e1ad26da8a0e774d935c357e8229cc",
+    "content-hash": "6f29c92495f5e5045ad725f6a287b947",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -579,6 +579,45 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "rinsvent/attribute-extractor",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rinsvent/attribute-extractor.git",
+                "reference": "081b9f18c2fa4305e8acbe63fff873ae59928c9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rinsvent/attribute-extractor/zipball/081b9f18c2fa4305e8acbe63fff873ae59928c9d",
+                "reference": "081b9f18c2fa4305e8acbe63fff873ae59928c9d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1",
+                "codeception/module-asserts": "^1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tests\\": "tests/",
+                    "Rinsvent\\AttributeExtractor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP 8 attribute extractor",
+            "support": {
+                "issues": "https://github.com/Rinsvent/attribute-extractor/issues",
+                "source": "https://github.com/Rinsvent/attribute-extractor/tree/v0.0.2"
+            },
+            "time": "2021-07-28T13:37:17+00:00"
         },
         {
             "name": "symfony/cache",
