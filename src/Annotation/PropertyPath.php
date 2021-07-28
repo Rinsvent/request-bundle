@@ -3,9 +3,9 @@
 namespace Rinsvent\RequestBundle\Annotation;
 
 #[\Attribute]
-class HeaderKey
+class PropertyPath
 {
     public function __construct(
-        public string $key
+        public string $path
     ) {}
 }

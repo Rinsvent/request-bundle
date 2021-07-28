@@ -40,31 +40,8 @@ class FillTest extends \Codeception\Test\Unit
         $request = Request::create('/hello/igor', 'GET', [
             'surname' => 'Surname'
         ]);
-        $response = $this->send($request);
+        $response = $this->tester->send($request);
 
         $this->assertEquals('Surname', $request->get(RequestListener::REQUEST_DATA)->surname);
-    }
-
-    private function send(Request $request): Response
-    {
-        $routes = new RouteCollection();
-        $controller = new Controller();
-        $routes->add('hello', new Route('/hello/{name}', [
-                '_controller' => [$controller, 'hello']
-            ]
-        ));
-
-        $matcher = new UrlMatcher($routes, new RequestContext());
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new RouterListener($matcher, new RequestStack()));
-        $listener = new RequestListener();
-        $dispatcher->addListener('kernel.request', [$listener, 'onKernelRequest']);
-
-        $controllerResolver = new ControllerResolver();
-        $argumentResolver = new ArgumentResolver();
-        $kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
-        $response = $kernel->handle($request);
-        $response->send();
-        return $response;
     }
 }
