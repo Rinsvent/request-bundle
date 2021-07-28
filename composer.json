@@ -10,7 +10,8 @@
         "ext-json": "*",
         "jms/serializer": "^3.13",
         "symfony/validator": "^5.3",
-        "symfony/cache": "^5.3"
+        "symfony/cache": "^5.3",
+        "symfony/string": "^5.3"
     },
     "require-dev": {
         "codeception/codeception": "^4.1",
