@@ -15,4 +15,13 @@ class Controller
             sprintf("Hello %s", $request->get('name'))
         );
     }
+
+    #[RequestDTO(className: HelloRequest::class, jsonPath: '$.user')]
+    #[RequestDTO(className: BuyRequest::class, jsonPath: '$.guest')]
+    public function hello2(Request $request)
+    {
+        return new Response(
+            sprintf("Hello %s", $request->get('name'))
+        );
+    }
 }
