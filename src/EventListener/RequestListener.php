@@ -4,6 +4,7 @@ namespace Rinsvent\RequestBundle\EventListener;
 
 use JMS\Serializer\SerializerBuilder;
 use ReflectionObject;
+use Rinsvent\AttributeExtractor\PropertyExtractor;
 use Rinsvent\RequestBundle\Annotation\RequestDTO;
 use Rinsvent\RequestBundle\Annotation\HeaderKey;
 use Rinsvent\RequestBundle\DTO\Error;
@@ -88,11 +89,9 @@ class RequestListener
         $reflectionObject = new ReflectionObject($object);
         $properties = $reflectionObject->getProperties();
         foreach ($properties as $property) {
-            $attributes = $property->getAttributes(HeaderKey::class);
-            $attribute = $attributes[0] ?? null;
-            if ($attribute) {
-                /** @var HeaderKey $headerKey */
-                $headerKey = $attribute->newInstance();
+            $propertyExtractor = new PropertyExtractor($object::class, $property->getName());
+            /** @var HeaderKey $headerKey */
+            if ($headerKey = $propertyExtractor->fetch(HeaderKey::class)) {
                 $value = $data[strtolower($headerKey->key)][0] ?? null;
             } else {
                 $value = $data[$property->getName()] ?? null;
