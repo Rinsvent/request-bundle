@@ -27,7 +27,7 @@ class RequestListener
         if (is_string($controller)) {
             $controller = explode('::', $controller);
         }
-        if (is_callable($controller)){
+        if (is_callable($controller)) {
             if (is_object($controller[0])) {
                 $controller[0] = get_class($controller[0]);
             }
