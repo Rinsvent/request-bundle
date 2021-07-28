@@ -3,6 +3,7 @@
 namespace Rinsvent\RequestBundle\Tests\Listener;
 
 use Rinsvent\RequestBundle\Tests\unit\Listener\fixtures\FillTest\Controller;
+use Rinsvent\RequestBundle\Tests\unit\Listener\fixtures\FillTest\HelloRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -41,7 +42,7 @@ class GenerateTest extends \Codeception\Test\Unit
         ]);
         $response = $this->send($request);
 
-        $this->assertEquals(3, $request->get('form'));
+        $this->assertEquals('Surname', $request->get(HelloRequest::class)->surname);
     }
 
     private function send(Request $request): Response
