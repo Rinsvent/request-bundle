@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Validation;
 // todo базовая заготовка. Требуется рефакторинг
 class RequestListener
 {
+    public const REQUEST_DATA = 'request_data';
+
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
@@ -39,7 +41,7 @@ class RequestListener
             if ($errorCollection->hasErrors()) {
                 $event->setResponse(new JsonResponse(['errors' => $errorCollection->format()], Response::HTTP_BAD_REQUEST));
             } else {
-                $request->attributes->set($requestDTOInstance::class, $requestDTOInstance);
+                $request->attributes->set(self::REQUEST_DATA, $requestDTOInstance);
             }
         }
     }

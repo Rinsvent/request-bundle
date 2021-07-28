@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 use Rinsvent\RequestBundle\EventListener\RequestListener;
 
-class GenerateTest extends \Codeception\Test\Unit
+class FillTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
@@ -35,14 +35,14 @@ class GenerateTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testGenerateEnum()
+    public function testSuccessFillRequestData()
     {
         $request = Request::create('/hello/igor', 'GET', [
             'surname' => 'Surname'
         ]);
         $response = $this->send($request);
 
-        $this->assertEquals('Surname', $request->get(HelloRequest::class)->surname);
+        $this->assertEquals('Surname', $request->get(RequestListener::REQUEST_DATA)->surname);
     }
 
     private function send(Request $request): Response
