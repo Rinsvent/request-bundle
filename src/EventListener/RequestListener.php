@@ -3,12 +3,12 @@
 namespace Rinsvent\RequestBundle\EventListener;
 
 use JMS\Serializer\SerializerBuilder;
-use ReflectionMethod;
 use ReflectionObject;
 use Rinsvent\RequestBundle\Annotation\RequestDTO;
 use Rinsvent\RequestBundle\Annotation\HeaderKey;
 use Rinsvent\RequestBundle\DTO\Error;
 use Rinsvent\RequestBundle\DTO\ErrorCollection;
+use Rinsvent\AttributeExtractor\MethodExtractor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -23,20 +23,16 @@ class RequestListener
         $controller = $request->get('_controller');
         if (is_string($controller)) {
             $controller = explode('::', $controller);
-            $method = new ReflectionMethod($controller[0], $controller[1]);
         }
         if (is_callable($controller)){
-            $method = new ReflectionMethod($controller[0], $controller[1]);
-        }
-        if (!isset($method)) {
-            return;
+            if (is_object($controller[0])) {
+                $controller[0] = get_class($controller[0]);
+            }
+            $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
         }
 
-        $attributes = $method->getAttributes(RequestDTO::class);
-        $attribute = $attributes[0] ?? null;
-        if ($attribute) {
-            /** @var RequestDTO $requestDTO */
-            $requestDTO = $attribute->newInstance();
+        /** @var RequestDTO $requestDTO */
+        if ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {
             $requestDTOInstance = $this->grabRequestDTO($requestDTO->className, $request->getContent(), $request->query->all(), $request->request->all(), $request->headers->all());
 
             $errorCollection = $this->validate($requestDTOInstance);
