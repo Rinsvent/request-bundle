@@ -11,7 +11,8 @@
         "jms/serializer": "^3.13",
         "symfony/validator": "^5.3",
         "symfony/cache": "^5.3",
-        "rinsvent/attribute-extractor": "^0.0.1"
+        "symfony/string": "^5.3",
+        "rinsvent/attribute-extractor": "^0.0.2"
     },
     "require-dev": {
         "codeception/codeception": "^4.1",
