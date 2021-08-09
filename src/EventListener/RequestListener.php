@@ -32,14 +32,25 @@ class RequestListener
         }
 
         /** @var RequestDTO $requestDTO */
-        if ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {
-            $requestDTOInstance = $this->grabRequestDTO($requestDTO->className, $request->getContent(), $request->query->all(), $request->request->all(), $request->headers->all());
+        while ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {
+            $requestDTOInstance = $this->grabRequestDTO($requestDTO, $request->getContent(), $request->query->all(), $request->request->all(), $request->headers->all());
 
             $errorCollection = $this->validate($requestDTOInstance);
             if ($errorCollection->hasErrors()) {
                 $event->setResponse(new JsonResponse(['errors' => $errorCollection->format()], Response::HTTP_BAD_REQUEST));
             } else {
-                $request->attributes->set(self::REQUEST_DATA, $requestDTOInstance);
+                $reflectionObject = new \ReflectionObject($requestDTOInstance);
+                $requestDTOName = $reflectionObject->getShortName();
+                $attributePath = lcfirst($requestDTOName);
+
+                if ($requestDTO->attributePath) {
+                    $attributePath = $requestDTO->attributePath;
+                }
+
+                if ($request->attributes->has($attributePath)) {
+                    throw new \Exception('Same request data has already exists!');
+                }
+                $request->attributes->set($attributePath, $requestDTOInstance);
             }
         }
     }
@@ -62,7 +73,7 @@ class RequestListener
         return $errorCollection;
     }
 
-    protected function grabRequestDTO(string $requestClass, string $content, array $queryParameters = [], array $parameters = [], array $headers = [])
+    protected function grabRequestDTO(RequestDTO $requestDTO, string $content, array $queryParameters = [], array $parameters = [], array $headers = [])
     {
         $data = [];
         try {
@@ -73,9 +84,28 @@ class RequestListener
 
         $data += $queryParameters;
         $data += $parameters;
+        $data = $this->grabDataByJsonPath($data, $requestDTO->jsonPath);
         $data += $headers;
 
         $data2dtoConverter = new Data2DtoConverter();
-        return $data2dtoConverter->convert($data, $requestClass);
+        return $data2dtoConverter->convert($data, $requestDTO->className);
+    }
+
+    private function grabDataByJsonPath(array $data, string $jsonPath): array
+    {
+        if ($jsonPath !== '$') {
+            $jsonPath = trim($jsonPath, '$');
+            $jsonPath = trim($jsonPath, '.');
+            $jsonPath = explode('.', $jsonPath);
+            if (is_array($jsonPath)) {
+                foreach ($jsonPath as $item) {
+                    $data = $data[$item] ?? null;
+                    if ($data === null) {
+                        return [];
+                    }
+                }
+            }
+        }
+        return $data;
     }
 }

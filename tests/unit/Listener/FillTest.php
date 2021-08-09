@@ -30,7 +30,7 @@ class FillTest extends \Codeception\Test\Unit
         $response = $this->tester->send($request);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Surname', $request->get(RequestListener::REQUEST_DATA)->surname);
+        $this->assertEquals('Surname', $request->get('helloRequest')->surname);
         $this->assertEquals('Hello igor', $response->getContent());
 
     }
