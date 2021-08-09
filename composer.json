@@ -8,11 +8,12 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "jms/serializer": "^3.13",
         "symfony/validator": "^5.3",
         "symfony/cache": "^5.3",
         "symfony/string": "^5.3",
-        "rinsvent/attribute-extractor": "^0.0.2"
+        "rinsvent/attribute-extractor": "^0.0.3",
+        "rinsvent/data2dto": "^0.0.1",
+        "doctrine/annotations": "^1.13"
     },
     "require-dev": {
         "codeception/codeception": "^4.1",

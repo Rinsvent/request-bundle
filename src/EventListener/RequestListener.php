@@ -2,10 +2,7 @@
 
 namespace Rinsvent\RequestBundle\EventListener;
 
-use JMS\Serializer\SerializerBuilder;
-use ReflectionObject;
-use Rinsvent\AttributeExtractor\PropertyExtractor;
-use Rinsvent\RequestBundle\Annotation\PropertyPath;
+use Rinsvent\Data2DTO\Data2DtoConverter;
 use Rinsvent\RequestBundle\Annotation\RequestDTO;
 use Rinsvent\RequestBundle\DTO\Error;
 use Rinsvent\RequestBundle\DTO\ErrorCollection;
@@ -65,42 +62,20 @@ class RequestListener
         return $errorCollection;
     }
 
-    /**
-     * todo переделать на перебор филлеров
-     * Сделать регистрацию филлеров
-     * и выексти филеры заполнения entity и documents в отдельных бандлах
-     */
     protected function grabRequestDTO(string $requestClass, string $content, array $queryParameters = [], array $parameters = [], array $headers = [])
     {
-        $serializer = SerializerBuilder::create()->build();
-        if ($content) {
-            $object = $serializer->deserialize($content, $requestClass, 'json');
-        } else {
-            $object = new $requestClass;
-        }
-        $this->fillFromData($object, $queryParameters);
-        $this->fillFromData($object, $parameters);
-        $this->fillFromData($object, $headers);
-        return $object;
-    }
-
-    protected function fillFromData(object $object, array $data): object
-    {
-        $reflectionObject = new ReflectionObject($object);
-        $properties = $reflectionObject->getProperties();
-        foreach ($properties as $property) {
-            $propertyExtractor = new PropertyExtractor($object::class, $property->getName());
-            /** @var PropertyPath $propertyPath */
-            if ($propertyPath = $propertyExtractor->fetch(PropertyPath::class)) {
-                $value = $data[strtolower($propertyPath->path)][0] ?? null;
-            } else {
-                $value = $data[$property->getName()] ?? null;
-            }
-            if ($value) {
-                $property->setValue($object, $value);
-            }
+        $data = [];
+        try {
+            $contentData = json_decode($content, true);
+            $data += $contentData;
+        } catch (\Throwable $e) {
         }
 
-        return $object;
+        $data += $queryParameters;
+        $data += $parameters;
+        $data += $headers;
+
+        $data2dtoConverter = new Data2DtoConverter();
+        return $data2dtoConverter->convert($data, $requestClass);
     }
 }
