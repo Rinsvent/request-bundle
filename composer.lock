@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33fca27c9541b7b78d56921e30a270f5",
+    "content-hash": "865a03b258b1491ea3389ea7f4d1f05d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -307,16 +307,16 @@
         },
         {
             "name": "rinsvent/attribute-extractor",
-            "version": "v0.0.3",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Rinsvent/attribute-extractor.git",
-                "reference": "68680a8f881b630b4017d172611237f5adc91738"
+                "reference": "b2c895bbf72d3b00170b526367dc0aa3a40ac064"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Rinsvent/attribute-extractor/zipball/68680a8f881b630b4017d172611237f5adc91738",
-                "reference": "68680a8f881b630b4017d172611237f5adc91738",
+                "url": "https://api.github.com/repos/Rinsvent/attribute-extractor/zipball/b2c895bbf72d3b00170b526367dc0aa3a40ac064",
+                "reference": "b2c895bbf72d3b00170b526367dc0aa3a40ac064",
                 "shasum": ""
             },
             "require": {
@@ -340,22 +340,22 @@
             "description": "PHP 8 attribute extractor",
             "support": {
                 "issues": "https://github.com/Rinsvent/attribute-extractor/issues",
-                "source": "https://github.com/Rinsvent/attribute-extractor/tree/v0.0.3"
+                "source": "https://github.com/Rinsvent/attribute-extractor/tree/v0.0.4"
             },
-            "time": "2021-08-07T09:31:14+00:00"
+            "time": "2021-08-09T01:56:26+00:00"
         },
         {
             "name": "rinsvent/data2dto",
-            "version": "v0.0.1",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Rinsvent/data2dto.git",
-                "reference": "b5eb6f6d1bcf981e2e82b1b6f2eca7cd6872aee1"
+                "reference": "5ece49e3308b7a93147814ab865fe33bdf751798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Rinsvent/data2dto/zipball/b5eb6f6d1bcf981e2e82b1b6f2eca7cd6872aee1",
-                "reference": "b5eb6f6d1bcf981e2e82b1b6f2eca7cd6872aee1",
+                "url": "https://api.github.com/repos/Rinsvent/data2dto/zipball/5ece49e3308b7a93147814ab865fe33bdf751798",
+                "reference": "5ece49e3308b7a93147814ab865fe33bdf751798",
                 "shasum": ""
             },
             "require": {
@@ -363,7 +363,7 @@
                 "ext-iconv": "*",
                 "ext-json": "*",
                 "php": "^8.0",
-                "rinsvent/attribute-extractor": "^0.0.3",
+                "rinsvent/attribute-extractor": "^0.0",
                 "symfony/string": "^5.3"
             },
             "require-dev": {
@@ -385,9 +385,9 @@
             "description": "Convert data to dto object",
             "support": {
                 "issues": "https://github.com/Rinsvent/data2dto/issues",
-                "source": "https://github.com/Rinsvent/data2dto/tree/v0.0.1"
+                "source": "https://github.com/Rinsvent/data2dto/tree/v0.0.2"
             },
-            "time": "2021-08-08T08:19:30+00:00"
+            "time": "2021-08-10T05:59:27+00:00"
         },
         {
             "name": "symfony/cache",

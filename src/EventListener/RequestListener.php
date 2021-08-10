@@ -28,8 +28,11 @@ class RequestListener
             if (is_object($controller[0])) {
                 $controller[0] = get_class($controller[0]);
             }
-            $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
         }
+        if (!is_array($controller) || !count($controller) === 2) {
+            return;
+        }
+        $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
 
         /** @var RequestDTO $requestDTO */
         while ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {

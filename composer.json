@@ -11,8 +11,8 @@
         "symfony/validator": "^5.3",
         "symfony/cache": "^5.3",
         "symfony/string": "^5.3",
-        "rinsvent/attribute-extractor": "^0.0.3",
-        "rinsvent/data2dto": "^0.0.1",
+        "rinsvent/attribute-extractor": "^0.0",
+        "rinsvent/data2dto": "^0.0",
         "doctrine/annotations": "^1.13"
     },
     "require-dev": {
