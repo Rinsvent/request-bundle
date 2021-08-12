@@ -5,9 +5,11 @@ services:
     autowire: true
 
   Rinsvent\RequestBundle\EventListener\RequestListener:
-    autowire: true
     tags:
       - { name: kernel.event_listener, event: kernel.request }
+
+  Rinsvent\RequestBundle\Service\Transformer\:
+    resource: '../../../src/Service/Transformer'
 
   Rinsvent\RequestBundle\Service\Transformer\ServiceResolver:
     bind:

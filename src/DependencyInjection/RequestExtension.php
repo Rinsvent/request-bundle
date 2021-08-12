@@ -2,6 +2,7 @@
 
 namespace Rinsvent\RequestBundle\DependencyInjection;
 
+use Rinsvent\RequestBundle\Service\Transformer\AbstractTransformer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -13,5 +14,7 @@ class RequestExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
+
+        // $container->findTaggedServiceIds(AbstractTransformer::class);
     }
 }

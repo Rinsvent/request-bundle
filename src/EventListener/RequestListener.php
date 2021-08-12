@@ -3,10 +3,12 @@
 namespace Rinsvent\RequestBundle\EventListener;
 
 use Rinsvent\Data2DTO\Data2DtoConverter;
+use Rinsvent\Data2DTO\Resolver\TransformerResolverStorage;
 use Rinsvent\RequestBundle\Annotation\RequestDTO;
 use Rinsvent\RequestBundle\DTO\Error;
 use Rinsvent\RequestBundle\DTO\ErrorCollection;
 use Rinsvent\AttributeExtractor\MethodExtractor;
+use Rinsvent\RequestBundle\Service\Transformer\ServiceResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -15,10 +17,15 @@ use Symfony\Component\Validator\Validation;
 // todo базовая заготовка. Требуется рефакторинг
 class RequestListener
 {
-    public const REQUEST_DATA = 'request_data';
+    public function __construct(
+        private ServiceResolver $serviceResolver
+    ) {}
 
     public function onKernelRequest(RequestEvent $event)
     {
+        $storage = TransformerResolverStorage::getInstance();
+        $storage->add(ServiceResolver::TYPE, $this->serviceResolver);
+
         $request = $event->getRequest();
         $controller = $request->get('_controller');
         if (is_string($controller)) {

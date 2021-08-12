@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class ServiceResolver implements TransformerResolverInterface
 {
+    public const TYPE = 'service';
+
     public function __construct(
         private ServiceLocator $transformerLocator
     ) {}

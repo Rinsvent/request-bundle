@@ -17,10 +17,10 @@ class EntityTransformer extends AbstractTransformer
      */
     public function transform(&$data, Meta $meta): void
     {
-        if (!is_int($data)) {
+        if (!is_string($data)) {
             return;
         }
         $repository = $this->em->getRepository($meta->class);
-        $data = $repository->find((int)$data);
+        $data = $repository->find((string)$data);
     }
 }
