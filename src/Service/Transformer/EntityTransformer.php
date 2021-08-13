@@ -4,6 +4,7 @@ namespace Rinsvent\RequestBundle\Service\Transformer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Rinsvent\Data2DTO\Transformer\Meta;
+use Rinsvent\Data2DTOBundle\Service\AbstractTransformer;
 
 class EntityTransformer extends AbstractTransformer
 {

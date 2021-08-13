@@ -17,15 +17,8 @@ use Symfony\Component\Validator\Validation;
 // todo базовая заготовка. Требуется рефакторинг
 class RequestListener
 {
-    public function __construct(
-        private ServiceResolver $serviceResolver
-    ) {}
-
     public function onKernelRequest(RequestEvent $event)
     {
-        $storage = TransformerResolverStorage::getInstance();
-        $storage->add(ServiceResolver::TYPE, $this->serviceResolver);
-
         $request = $event->getRequest();
         $controller = $request->get('_controller');
         if (is_string($controller)) {
