@@ -11,3 +11,6 @@ services:
   Rinsvent\RequestBundle\Service\Transformer\:
     resource: '../../../src/Service/Transformer'
 
+  _instanceof:
+    Rinsvent\Data2DTOBundle\Service\AbstractTransformer:
+      tags: [ 'rinsvent.transformer' ]
