@@ -7,10 +7,3 @@ services:
   Rinsvent\RequestBundle\EventListener\RequestListener:
     tags:
       - { name: kernel.event_listener, event: kernel.request }
-
-  Rinsvent\RequestBundle\Service\Transformer\:
-    resource: '../../../src/Service/Transformer'
-
-  _instanceof:
-    Rinsvent\Data2DTOBundle\Service\AbstractTransformer:
-      tags: [ 'rinsvent.transformer' ]
