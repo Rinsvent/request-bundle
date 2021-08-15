@@ -346,16 +346,16 @@
         },
         {
             "name": "rinsvent/data2dto",
-            "version": "v0.0.2",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Rinsvent/data2dto.git",
-                "reference": "5ece49e3308b7a93147814ab865fe33bdf751798"
+                "reference": "10f1937434ff8e38b21ad54963488e40a4ad2a7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Rinsvent/data2dto/zipball/5ece49e3308b7a93147814ab865fe33bdf751798",
-                "reference": "5ece49e3308b7a93147814ab865fe33bdf751798",
+                "url": "https://api.github.com/repos/Rinsvent/data2dto/zipball/10f1937434ff8e38b21ad54963488e40a4ad2a7d",
+                "reference": "10f1937434ff8e38b21ad54963488e40a4ad2a7d",
                 "shasum": ""
             },
             "require": {
@@ -371,7 +371,7 @@
                 "codeception/module-asserts": "^1.0.0",
                 "codeception/module-phpbrowser": "^1.0.0"
             },
-            "type": "project",
+            "type": "library",
             "autoload": {
                 "psr-4": {
                     "tests\\": "tests/",
@@ -380,14 +380,14 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "proprietary"
+                "MIT"
             ],
             "description": "Convert data to dto object",
             "support": {
                 "issues": "https://github.com/Rinsvent/data2dto/issues",
-                "source": "https://github.com/Rinsvent/data2dto/tree/v0.0.2"
+                "source": "https://github.com/Rinsvent/data2dto/tree/v0.0.4"
             },
-            "time": "2021-08-10T05:59:27+00:00"
+            "time": "2021-08-15T08:40:09+00:00"
         },
         {
             "name": "symfony/cache",

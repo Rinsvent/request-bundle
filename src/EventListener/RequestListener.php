@@ -3,12 +3,10 @@
 namespace Rinsvent\RequestBundle\EventListener;
 
 use Rinsvent\Data2DTO\Data2DtoConverter;
-use Rinsvent\Data2DTO\Resolver\TransformerResolverStorage;
 use Rinsvent\RequestBundle\Annotation\RequestDTO;
 use Rinsvent\RequestBundle\DTO\Error;
 use Rinsvent\RequestBundle\DTO\ErrorCollection;
 use Rinsvent\AttributeExtractor\MethodExtractor;
-use Rinsvent\RequestBundle\Service\Transformer\ServiceResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -36,7 +34,15 @@ class RequestListener
 
         /** @var RequestDTO $requestDTO */
         while ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {
-            $requestDTOInstance = $this->grabRequestDTO($requestDTO, $request->getContent(), $request->query->all(), $request->request->all(), $request->headers->all());
+            $requestDTOInstance = $this->grabRequestDTO(
+                $requestDTO,
+                $request->get('_route'),
+                $request->getContent(),
+                $request->query->all(),
+                $request->request->all(),
+                $request->headers->all(),
+                $request->server->all(),
+            );
 
             $errorCollection = $this->validate($requestDTOInstance);
             if ($errorCollection->hasErrors()) {
@@ -76,8 +82,15 @@ class RequestListener
         return $errorCollection;
     }
 
-    protected function grabRequestDTO(RequestDTO $requestDTO, string $content, array $queryParameters = [], array $parameters = [], array $headers = [])
-    {
+    protected function grabRequestDTO(
+        RequestDTO $requestDTO,
+        string $routeName,
+        string $content,
+        array $queryParameters = [],
+        array $parameters = [],
+        array $headers = [],
+        array $server = [],
+    ) {
         $data = [];
         try {
             $contentData = json_decode($content, true);
@@ -88,10 +101,13 @@ class RequestListener
         $data += $queryParameters;
         $data += $parameters;
         $data = $this->grabDataByJsonPath($data, $requestDTO->jsonPath);
-        $data += $headers;
 
         $data2dtoConverter = new Data2DtoConverter();
-        return $data2dtoConverter->convert($data, $requestDTO->className);
+        $result = $data2dtoConverter->convert($data, $requestDTO->className, ['default', 'request', 'source_body', 'route_' . $routeName]);
+        $result = $data2dtoConverter->convert($headers, $requestDTO->className, ['default', 'request', 'source_headers', 'route_' . $routeName], $result);
+        $result = $data2dtoConverter->convert($server, $requestDTO->className, ['default', 'request', 'source_server', 'route_' . $routeName], $result);
+
+        return $result;
     }
 
     private function grabDataByJsonPath(array $data, string $jsonPath): array
