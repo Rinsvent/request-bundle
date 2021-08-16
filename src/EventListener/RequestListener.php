@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Validator\Validation;
 
-// todo базовая заготовка. Требуется рефакторинг
 class RequestListener
 {
     public function onKernelRequest(RequestEvent $event)
@@ -39,9 +38,7 @@ class RequestListener
                 $request->get('_route'),
                 $request->getContent(),
                 $request->query->all(),
-                $request->request->all(),
-                $request->headers->all(),
-                $request->server->all(),
+                $request->request->all()
             );
 
             $errorCollection = $this->validate($requestDTOInstance);
@@ -84,12 +81,10 @@ class RequestListener
 
     protected function grabRequestDTO(
         RequestDTO $requestDTO,
-        string $routeName,
-        string $content,
-        array $queryParameters = [],
-        array $parameters = [],
-        array $headers = [],
-        array $server = [],
+        string     $routeName,
+        string     $content,
+        array      $queryParameters = [],
+        array      $parameters = []
     ) {
         $data = [];
         try {
@@ -103,9 +98,18 @@ class RequestListener
         $data = $this->grabDataByJsonPath($data, $requestDTO->jsonPath);
 
         $data2dtoConverter = new Data2DtoConverter();
-        $result = $data2dtoConverter->convert($data, $requestDTO->className, ['default', 'request', 'source_body', 'route_' . $routeName]);
-        $result = $data2dtoConverter->convert($headers, $requestDTO->className, ['default', 'request', 'source_headers', 'route_' . $routeName], $result);
-        $result = $data2dtoConverter->convert($server, $requestDTO->className, ['default', 'request', 'source_server', 'route_' . $routeName], $result);
+        $result = $data2dtoConverter->convert(
+            $data,
+            new $requestDTO->className,
+            [
+                'default',
+                'request',
+                'request_body',
+                'request_headers',
+                'request_server',
+                'route_' . $routeName
+            ]
+        );
 
         return $result;
     }
