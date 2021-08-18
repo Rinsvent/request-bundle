@@ -31,17 +31,26 @@ class RequestListener
         }
         $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
 
+        $tags = [
+            'default',
+            'request',
+            'request_body',
+            'request_headers',
+            'request_server',
+            'route_' . $request->get('_route')
+        ];
+
         /** @var RequestDTO $requestDTO */
         while ($requestDTO = $methodExtractor->fetch(RequestDTO::class)) {
             $requestDTOInstance = $this->grabRequestDTO(
                 $requestDTO,
-                $request->get('_route'),
+                $tags,
                 $request->getContent(),
                 $request->query->all(),
                 $request->request->all()
             );
 
-            $errorCollection = $this->validate($requestDTOInstance);
+            $errorCollection = $this->validate($requestDTOInstance, $tags);
             if ($errorCollection->hasErrors()) {
                 $event->setResponse(new JsonResponse(['errors' => $errorCollection->format()], Response::HTTP_BAD_REQUEST));
             } else {
@@ -61,14 +70,15 @@ class RequestListener
         }
     }
 
-    protected function validate(object $data): ErrorCollection
+    protected function validate(object $data, array $tags): ErrorCollection
     {
+        $tags = array_merge($tags, ['Default']);
         $validator = Validation::createValidatorBuilder()
             ->enableAnnotationMapping(true)
             ->addDefaultDoctrineAnnotationReader()
             ->getValidator();
 
-        $violations = $validator->validate($data);
+        $violations = $validator->validate($data, null, $tags);
 
         $errorCollection = new ErrorCollection();
         if ($violations->count()) {
@@ -81,7 +91,7 @@ class RequestListener
 
     protected function grabRequestDTO(
         RequestDTO $requestDTO,
-        string     $routeName,
+        array      $tags,
         string     $content,
         array      $queryParameters = [],
         array      $parameters = []
@@ -101,14 +111,7 @@ class RequestListener
         $result = $data2dtoConverter->convert(
             $data,
             new $requestDTO->className,
-            [
-                'default',
-                'request',
-                'request_body',
-                'request_headers',
-                'request_server',
-                'route_' . $routeName
-            ]
+            $tags
         );
 
         return $result;
