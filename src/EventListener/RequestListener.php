@@ -91,7 +91,7 @@ class RequestListener
 
     protected function grabRequestDTO(
         RequestDTO $requestDTO,
-        array      $tags,
+        array      &$tags,
         string     $content,
         array      $queryParameters = [],
         array      $parameters = []
@@ -108,6 +108,7 @@ class RequestListener
         $data = $this->grabDataByJsonPath($data, $requestDTO->jsonPath);
 
         $data2dtoConverter = new Data2DtoConverter();
+        $tags = $data2dtoConverter->getTags($data, new $requestDTO->className, $tags);
         $result = $data2dtoConverter->convert(
             $data,
             new $requestDTO->className,
