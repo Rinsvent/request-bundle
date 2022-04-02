@@ -9,5 +9,6 @@ class RequestDTO
         public string $className,
         public string $jsonPath = '$',
         public ?string $attributePath = null,
-    ) {}
+    ) {
+    }
 }

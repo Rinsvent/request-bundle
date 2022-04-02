@@ -7,5 +7,6 @@ class PropertyPath
 {
     public function __construct(
         public string $path
-    ) {}
+    ) {
+    }
 }
