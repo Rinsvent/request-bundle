@@ -29,7 +29,12 @@ class RequestListener
         if (!is_array($controller) || !count($controller) === 2) {
             return;
         }
-        $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
+
+        try {
+            $methodExtractor = new MethodExtractor($controller[0], $controller[1]);
+        } catch (\Throwable) {
+            return;
+        }
 
         $tags = [
             'default',
